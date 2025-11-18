@@ -24,7 +24,7 @@
     .animated-bg{background:linear-gradient(-45deg,#667eea,#764ba2,#6b21a8,#3b82f6);background-size:400% 400%;animation:gradientFlow 15s ease infinite}
     section:target{scroll-margin-top:80px}
 
-    /* Swiper 主题（与标题色一致） */
+    /* Swiper 主题 */
     .swiper-pagination-bullet{background:#4f46e5!important;opacity:.5}
     .swiper-pagination-bullet-active{background:#4f46e5!important;opacity:1}
     .swiper-button-next,.swiper-button-prev{color:#4f46e5!important;fill:#4f46e5!important;stroke:#4f46e5!important;transition:color .3s}
@@ -32,7 +32,7 @@
     .dark .swiper-pagination-bullet{background:#818cf8!important}
     .dark .swiper-pagination-bullet-active{background:#818cf8!important}
     .dark .swiper-button-next,.dark .swiper-button-prev{color:#818cf8!important;fill:#818cf8!important;stroke:#818cf8!important}
-    .dark .swiper-button-next:hover,.dark .swiper-button-prev:hover{color:#a5b4fc!important}
+    .dark .swiper-button-next:hover,.swiper-button-prev:hover{color:#a5b4fc!important}
 
     /* 语言切换 */
     .lang-switch{display:inline-flex;align-items:center;gap:1rem;padding:.35rem .6rem;border-radius:9999px;background:transparent;border:none}
@@ -44,28 +44,121 @@
     .dark .lang-btn:hover{color:#c7d2fe;box-shadow:none}
     .lang-btn:focus,.lang-btn:focus-visible{outline:none;box-shadow:none}
 
-    /* 页签高亮 */
-    .nav-link.active{
-      color:#4f46e5;
+   /* 首页横向滚动 Projects 区 */
+.projects-marquee{
+  position:relative;
+  overflow:hidden;
+  mask-image:linear-gradient(to right,transparent,black 10%,black 90%,transparent);
+  -webkit-mask-image:linear-gradient(to right,transparent,black 10%,black 90%,transparent);
+}
+.projects-track{
+  display:flex;
+  gap:1.5rem;
+  width:max-content;
+  animation:projectsScroll 28s linear infinite;
+}
+.projects-marquee:hover .projects-track{
+  animation-play-state:paused;
+}
+.projects-card{
+  flex:0 0 220px;
+}
+@keyframes projectsScroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+.project-title{
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  word-break:break-word;
+  font-size:0.875rem;       /* 统一成普通正文略小一点 */
+  line-height:1.3;
+  text-align:left;          /* 左对齐 */
+  margin-bottom:0.25rem;    /* 项目名与公司信息之间留一点空间 */
+}
+
+    /* 统一卡片样式：默认灰边+灰阴影，hover 时紫边+灰阴影 */
+    .card-basic{
+      background:#ffffff;
+      border-radius:16px;
+      border:1px solid #e5e7eb;
+      box-shadow:0 12px 24px rgba(15,23,42,.06);
+      transform:translateY(0) scale(1);
+      transition:
+        border-color .22s ease,
+        box-shadow .22s ease,
+        transform .22s ease;
     }
-    .dark .nav-link.active{
-      color:#a5b4fc;
+    .dark .card-basic{
+      background:#111827;
+      border-color:#1f2937;
+      box-shadow:0 12px 26px rgba(0,0,0,.7);
     }
+    .card-basic:hover,
+    .card-basic:focus-visible{
+      border-color:#6366f1;
+      box-shadow:0 16px 30px rgba(15,23,42,.12);
+      transform:translateY(-2px) scale(1.01);
+    }
+    .card-basic:active{
+      border-color:#4f46e5;
+      box-shadow:0 8px 18px rgba(15,23,42,.16);
+      transform:translateY(0) scale(.99);
+    }
+
+/* 大标题：让宽度跟文字一样 */
+.section-title{
+  font-size:1.75rem;
+  font-weight:700;
+  color:#4f46e5;
+  display:inline-block;          /* ✅ 从 block 改成 inline-block */
+  position:relative;
+  padding-bottom:.25rem;
+  margin-bottom:1.5rem;
+}
+.section-title::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-0.25rem;
+  width:100%;                   /* 现在 100% 就是文字本身的宽度 */
+  height:3px;
+  border-radius:9999px;
+  background:linear-gradient(90deg,#4f46e5,#c7d2fe);
+}
+
+/* 小标题：单独一行显示、不要横线 */
+.subsection-title{
+  font-size:1.25rem;
+  font-weight:600;
+  color:#4f46e5;
+  display:block;                /* ✅ 从 inline-block 改成 block，保证换行 */
+  margin:1.5rem 0 1rem;
+  padding-bottom:0;
+}
+
+/* 如果还在，就把这一段删掉或注释掉 */
+.subsection-title::after{
+  display:none;
+}
+
   </style>
 </head>
-<body class="bg-gray-100 text-gray-800 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
+<body class="bg-white text-gray-800 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-100">
 
 <!-- Header -->
 <header class="fixed top-0 left-0 w-full z-50 nav-bg shadow-sm">
   <nav class="max-w-6xl mx-auto flex justify-between items-center py-3 px-6">
     <span class="font-bold text-indigo-600 dark:text-indigo-400">KYOU</span>
 
-    <!-- 4 个页签 -->
+    <!-- PC Tabs -->
     <ul class="hidden md:flex space-x-6 text-sm font-medium">
-      <li><a href="#page-home"    class="nav-link hover:text-indigo-500" data-page="page-home"    data-i18n="nav.home"></a></li>
-      <li><a href="#page-about"   class="nav-link hover:text-indigo-500" data-page="page-about"   data-i18n="nav.about"></a></li>
-      <li><a href="#page-works"   class="nav-link hover:text-indigo-500" data-page="page-works"   data-i18n="nav.works"></a></li>
-      <li><a href="#page-contact" class="nav-link hover:text-indigo-500" data-page="page-contact" data-i18n="nav.contact"></a></li>
+      <li><button type="button" class="tab-link pb-1 border-b-2 border-transparent hover:border-indigo-400" data-tab="home" data-i18n="nav.home"></button></li>
+      <li><button type="button" class="tab-link pb-1 border-b-2 border-transparent hover:border-indigo-400" data-tab="about" data-i18n="nav.about"></button></li>
+      <li><button type="button" class="tab-link pb-1 border-b-2 border-transparent hover:border-indigo-400" data-tab="works" data-i18n="nav.works"></button></li>
+      <li><button type="button" class="tab-link pb-1 border-b-2 border-transparent hover:border-indigo-400" data-tab="contact" data-i18n="nav.contact"></button></li>
     </ul>
 
     <div class="flex items-center space-x-3">
@@ -81,475 +174,679 @@
     </div>
   </nav>
 
-  <!-- 手机端菜单 -->
-  <div id="mobileMenu" class="hidden md:hidden flex-col bg-white dark:bg-gray-800 shadow-md px-6 py-4 space-y-4 text-sm font-medium">
-    <a href="#page-home"    class="nav-link block hover:text-indigo-500" data-page="page-home"    data-i18n="nav.home"></a>
-    <a href="#page-about"   class="nav-link block hover:text-indigo-500" data-page="page-about"   data-i18n="nav.about"></a>
-    <a href="#page-works"   class="nav-link block hover:text-indigo-500" data-page="page-works"   data-i18n="nav.works"></a>
-    <a href="#page-contact" class="nav-link block hover:text-indigo-500" data-page="page-contact" data-i18n="nav.contact"></a>
+  <!-- Mobile Tabs -->
+  <div id="mobileMenu" class="hidden md:hidden flex-col bg-white dark:bg-gray-800 shadow-md px-6 py-4 space-y-3 text-sm font-medium">
+    <button type="button" class="tab-link text-left w-full py-1 border-b border-gray-200 dark:border-gray-700" data-tab="home" data-i18n="nav.home"></button>
+    <button type="button" class="tab-link text-left w-full py-1 border-b border-gray-200 dark:border-gray-700" data-tab="about" data-i18n="nav.about"></button>
+    <button type="button" class="tab-link text-left w-full py-1 border-b border-gray-200 dark:border-gray-700" data-tab="works" data-i18n="nav.works"></button>
+    <button type="button" class="tab-link text-left w-full py-1" data-tab="contact" data-i18n="nav.contact"></button>
   </div>
 </header>
 
-<!-- Hero：首页专用 -->
-<section id="hero" class="h-screen flex flex-col justify-center items-center text-center text-white animated-bg">
-  <div class="max-w-2xl" data-aos="fade-up">
-    <img src="images/MYMYMY.jpg" alt="profile"
-         class="w-40 h-40 rounded-lg border-4 border-white mx-auto mb-6 shadow-xl object-cover transition transform hover:scale-110 cursor-pointer" loading="lazy">
-    <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">KYOU</h1>
-    <p class="text-lg md:text-2xl mb-2 opacity-90" data-i18n="hero.roles"></p>
-    <p class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400" data-i18n="hero.tagline"></p>
-  </div>
-</section>
+<main class="pt-24">
 
-<main class="mt-20 space-y-16 max-w-6xl mx-auto">
-
-<!-- 自己紹介 -->
-<section id="about" class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-10" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-10 border-b-2 pb-2 text-indigo-600 dark:text-indigo-400" data-i18n="about.title"></h2>
-
-  <div class="grid md:grid-cols-3 gap-10 items-start">
-    <div class="md:col-span-1 text-center space-y-4">
-      <img src="images/MYMYMY.jpg" alt="KYOU"
-           class="w-40 h-40 rounded-full mx-auto shadow-md border-4 border-indigo-300 dark:border-indigo-500 transition transform hover:scale-110 cursor-pointer" loading="lazy">
-      <p class="text-2xl font-bold tracking-wide text-indigo-600 dark:text-indigo-400">KYOU</p>
-      <p class="text-sm text-gray-700 dark:text-gray-300" data-i18n="hero.roles"></p>
-    </div>
-
-    <div class="md:col-span-2 space-y-4 text-base leading-relaxed text-gray-700 dark:text-gray-300 mb-12">
-      <p data-i18n="about.p1"></p>
-      <p data-i18n="about.p2"></p>
-      <p data-i18n="about.p3"></p>
-      <p data-i18n="about.p4"></p>
-      <p data-i18n="about.p5"></p>
-      <p class="mb-12" data-i18n="about.p6"></p>
-    </div>
-  </div>
-
-  <h3 class="text-2xl font-bold mb-6 border-b pb-1 text-indigo-600 dark:text-indigo-400" data-i18n="about.edu"></h3>
-  <div class="space-y-4">
-    <div class="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow transition transform hover:shadow-lg hover:scale-105">
-      <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold whitespace-nowrap">2019–2021</span>
-      <p class="font-medium" data-i18n="about.eduItem1"></p>
-    </div>
-  </div>
-
-  <h3 class="text-2xl font-bold mt-10 mb-6 border-b pb-1 text-indigo-600 dark:text-indigo-400" data-i18n="about.career"></h3>
-  <div class="space-y-4">
-    <div class="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow transition transform hover:shadow-lg hover:scale-105">
-      <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold">2021–2022</span>
-      <p class="font-medium" data-i18n="about.job1"></p>
-    </div>
-    <div class="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow transition transform hover:shadow-lg hover:scale-105">
-      <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold">2022–2023</span>
-      <p class="font-medium" data-i18n="about.job2"></p>
-    </div>
-    <div class="flex items-start space-x-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow transition transform hover:shadow-lg hover:scale-105">
-      <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold">2023–現在</span>
-      <p class="font-medium" data-i18n="about.job3"></p>
-    </div>
-  </div>
-</section>
-
-<!-- 実績一覧 -->
-<section id="works" class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8 mt-12" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2 text-indigo-600 dark:text-indigo-400" data-i18n="works.title"></h2>
-
-  <div class="space-y-12">
-
-    <!-- 八紘電機 -->
-    <div>
-      <h3 class="text-2xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400" data-i18n="works.yahiro.title"></h3>
-
-      <details class="mb-6">
-        <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.gd"></summary>
-        <div class="grid md:grid-cols-3 gap-6 mt-4">
-          <!-- 公司目录 -->
-          <a href="#" class="pdf-link block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-             data-link-ja="https://drive.google.com/file/d/1aWW4SiwCUDK8FGguC-LIVNoTABj5q201/view?usp=drive_link"
-             data-link-en="https://drive.google.com/file/d/1aWW4SiwCUDK8FGguC-LIVNoTABj5q201/view?usp=drive_link"
-             data-link-zh="https://drive.google.com/file/d/1aWW4SiwCUDK8FGguC-LIVNoTABj5q201/view?usp=drive_link">
-            <img src="images/yahiro_design1.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
-            <p class="font-semibold text-center" data-i18n="works.yahiro.catalog"></p>
-          </a>
-          <!-- 公司宣传册 -->
-          <a href="#" class="pdf-link block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-             data-link-ja="https://drive.google.com/file/d/1eYd87OIsM2YriO2sOBLkEI-Gc0UjgQQY/view?usp=drive_link"
-             data-link-en="https://drive.google.com/file/d/1eYd87OIsM2YriO2sOBLkEI-Gc0UjgQQY/view?usp=drive_link"
-             data-link-zh="https://drive.google.com/file/d/1eYd87OIsM2YriO2sOBLkEI-Gc0UjgQQY/view?usp=drive_link">
-            <img src="images/yahiro_design2.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
-            <p class="font-semibold text-center" data-i18n="works.yahiro.pamphlet"></p>
-          </a>
-        </div>
-      </details>
-
-      <details class="mb-6">
-        <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.ep"></summary>
-        <div class="grid md:grid-cols-3 gap-6 mt-4">
-          <!-- 公司作品集案例 -->
-          <a href="#" class="pdf-link block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-             data-link-ja="https://drive.google.com/file/d/105B7EzpLmAPlZHYhTZ3IOCx67rGuOO-H/view?usp=drive_link"
-             data-link-en="https://drive.google.com/file/d/1n8MVSPdsWKTOwMza81-0vFj3XnsPUL3_/view?usp=drive_link"
-             data-link-zh="https://drive.google.com/file/d/1fgDihuhetkbLAS6hPFTLXrlIyvK9GUBh/view?usp=drive_link">
-            <img src="images/yahiro_event.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
-            <p class="font-semibold text-center" data-i18n="works.yahiro.case"></p>
-          </a>
-        </div>
-      </details>
-    </div>
-
-    <!-- CTW -->
-    <div>
-      <h3 class="text-2xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400" data-i18n="works.ctw.title"></h3>
-
-      <details class="mb-6">
-        <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.pm"></summary>
-        <div class="grid md:grid-cols-3 gap-6 mt-4">
-          <a class="i18n-href block rounded-lg overflow-hidden shadow hover:shadow-lg transition transform hover:scale-105"
-             data-href-ja="https://g123.jp/news/kantai?lang=ja"
-             data-href-en="https://g123.jp/news/kantai?lang=en"
-             data-href-zh="https://g123.jp/news/kantai?lang=zh" target="_blank">
-            <img src="images/ctw_kantai.png" alt="" class="w-full object-cover rounded" style="aspect-ratio:600/1138;">
-            <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.kantai"></p>
-          </a>
-          <a class="i18n-href block rounded-lg overflow-hidden shadow hover:shadow-lg transition transform hover:scale-105"
-             data-href-ja="https://g123.jp/game/yamato?lang=ja"
-             data-href-en="https://g123.jp/game/yamato?lang=en"
-             data-href-zh="https://g123.jp/game/yamato?lang=zh" target="_blank">
-            <img src="images/ctw_yamato.jpg" alt="" class="w-full object-cover rounded" style="aspect-ratio:600/1138;">
-            <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.yamato"></p>
-          </a>
-          <a class="i18n-href block rounded-lg overflow-hidden shadow hover:shadow-lg transition transform hover:scale-105"
-             data-href-ja="https://g123.jp/game/ginei?lang=ja"
-             data-href-en="https://g123.jp/game/ginei?lang=en"
-             data-href-zh="https://g123.jp/game/ginei?lang=zh" target="_blank">
-            <img src="images/ctw_ginei.png" alt="" class="w-full object-cover rounded" style="aspect-ratio:600/1138;">
-            <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.ginei"></p>
-          </a>
-          <a class="i18n-href block rounded-lg overflow-hidden shadow hover:shadow-lg transition transform hover:scale-105"
-             data-href-ja="https://g123.jp/game/wixoss?lang=ja"
-             data-href-en="https://g123.jp/game/wixoss?lang=en"
-             data-href-zh="https://g123.jp/game/wixoss?lang=zh" target="_blank">
-            <img src="images/ctw_wixoss.png" alt="" class="w-full object-cover" style="aspect-ratio:600/1138;">
-            <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.wixoss"></p>
-          </a>
-          <a class="i18n-href block rounded-lg overflow-hidden shadow hover:shadow-lg transition transform hover:scale-105"
-             data-href-ja="https://g123.jp/game/seirei?lang=ja"
-             data-href-en="https://g123.jp/game/seirei?lang=en"
-             data-href-zh="https://g123.jp/game/seirei?lang=zh" target="_blank">
-            <img src="images/ctw_seirei.png" alt="" class="w-full object-cover" style="aspect-ratio:600/1138%;">
-            <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.seirei"></p>
-          </a>
-        </div>
-      </details>
-
-      <details>
-        <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.op"></summary>
-        <div class="grid md:grid-cols-3 gap-6 mt-4">
-          <!-- 游戏礼包售卖 PDF -->
-          <a href="#" class="pdf-link block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-             data-link-ja="https://drive.google.com/file/d/1Gf_nrrbmCQT2N5nIlAf48qYRRYandxsW/view?usp=drive_link"
-             data-link-en="https://drive.google.com/file/d/11he4c7U9pXixkHvpzYWubbx9tGZEYvhi/view?usp=drive_link"
-             data-link-zh="https://drive.google.com/file/d/1eysFGq5zlpgJaWAlCxfzGA-XFToH3guQ/view?usp=drive_link">
-            <img src="images/ctw_game1.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
-            <p class="font-semibold text-center" data-i18n="works.ctw.kpi"></p>
-          </a>
-          <!-- 游戏活动策划 PDF -->
-          <a href="#" class="pdf-link block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-             data-link-ja="https://drive.google.com/file/d/1xv6WF43d-bgWQIg7iHVD2GaClt37v6He/view?usp=drive_link"
-             data-link-en="https://drive.google.com/file/d/1PdAU5H5puU5_5z88h1p-fJ9u0wRLuhBM/view?usp=drive_link"
-             data-link-zh="https://drive.google.com/file/d/12e5tAGpP7HwcAdG6BJvHa9M5vWRc7z9B/view?usp=drive_link">
-            <img src="images/ctw_game2.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
-            <p class="font-semibold text-center" data-i18n="works.ctw.event"></p>
-          </a>
-        </div>
-      </details>
-    </div>
-
-    <!-- 株式会社Yostar -->
-    <div>
-      <h3 class="text-2xl font-semibold mb-4 text-indigo-600 dark:text-indigo-400" data-i18n="works.yostar.title"></h3>
-
-      <details class="mb-6">
-        <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.qa"></summary>
-        <div class="grid md:grid-cols-3 gap-6 mt-4">
-          <!-- QA 用例 -->
-          <a href="#" class="pdf-link block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-             data-link-ja="https://docs.google.com/spreadsheets/d/19C02X-HV6lsJRzRN_Bu52m--RgqSJ8LLLgM6fZoFfWk/edit?usp=sharing"
-             data-link-en="https://docs.google.com/spreadsheets/d/19C02X-HV6lsJRzRN_Bu52m--RgqSJ8LLLgM6fZoFfWk/edit?usp=sharing"
-             data-link-zh="https://docs.google.com/spreadsheets/d/19C02X-HV6lsJRzRN_Bu52m--RgqSJ8LLLgM6fZoFfWk/edit?usp=sharing">
-            <img src="images/a-qa.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
-            <p class="font-semibold text-center" data-i18n="works.yostar.qaCases"></p>
-          </a>
-          <!-- 伤害计算器 -->
-          <a href="#" class="pdf-link block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-             data-link-ja="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
-             data-link-en="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
-             data-link-zh="https://kyoushingi-lab.github.io/azurlane-damage-calc/">
-            <img src="images/a-calc.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
-            <p class="font-semibold text-center" data-i18n="works.yostar.calc"></p>
-          </a>
-        </div>
-      </details>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- 作品展示 -->
-<section id="portfolio" class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2 text-indigo-600 dark:text-indigo-400" data-i18n="portfolio.title"></h2>
-  <h3 class="text-2xl font-semibold mb-6 text-indigo-600 dark:text-indigo-400" data-i18n="portfolio.flowersTitle"></h3>
-
-  <!-- 企画書 -->
-  <div class="grid grid-cols-1 mb-6">
-    <a class="i18n-href portfolio-card p-4 rounded-xl bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-       target="_blank"
-       data-href-ja="https://drive.google.com/file/d/1qFWPrr3cwu3SY2jfY9LDBE6cK6Uw7OpX/view?usp=drive_link"
-       data-href-en="https://drive.google.com/file/d/1C9Gti4wPzKjLVx6J7dIap_HG9BNLn08T/view?usp=drive_link"
-       data-href-zh="https://drive.google.com/file/d/1U0fy3uZ3fnREzgYJOVg2KMJfbnSarsw-/view?usp=drive_link">
-      <img src="images/flowers-pdf-preview.png" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
-      <h4 class="font-semibold text-lg" data-i18n="portfolio.plan"></h4>
-      <p class="text-sm" data-i18n="portfolio.planDesc"></p>
-    </a>
-  </div>
-
-  <!-- Weibo 链接 -->
-  <div class="grid grid-cols-1 mb-6">
-    <a href="https://weibo.com/u/3950079300" target="_blank"
-       class="portfolio-card flex items-center p-4 rounded-xl bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105">
-      <img src="images/flowers-weibo-avatar.png" alt="Weibo"
-           class="w-20 h-20 rounded-full object-cover border border-gray-300 dark:border-gray-600 shadow-md mr-4">
-      <div>
-        <h4 class="font-semibold text-lg text-indigo-600 dark:text-indigo-400" data-i18n="portfolio.flowers.weiboTitle"></h4>
-        <p class="text-sm text-gray-600 dark:text-gray-300" data-i18n="portfolio.flowers.weiboDesc"></p>
+  <!-- TAB: 首页 -->
+  <div id="tab-home" class="tab-panel">
+    <!-- Hero -->
+    <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center text-white animated-bg">
+      <div class="max-w-2xl" data-aos="fade-up">
+        <img src="images/MYMYMY.jpg" alt="profile"
+             class="w-40 h-40 rounded-lg border-4 border-white mx-auto mb-6 object-cover transition transform hover:scale-110 cursor-pointer" loading="lazy">
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">KYOU</h1>
+        <p class="text-lg md:text-2xl mb-2 opacity-90" data-i18n="hero.roles"></p>
+        <p class="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400" data-i18n="hero.tagline"></p>
       </div>
-    </a>
-  </div>
+    </section>
 
-  <!-- 春夏 -->
-  <div class="grid md:grid-cols-2 gap-6 mb-6">
-    <a href="https://store.steampowered.com/app/452440/Flowers_Le_volume_sur_printemps/" target="_blank"
-       class="portfolio-card p-4 rounded-xl bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105">
-      <img src="https://cdn.akamai.steamstatic.com/steam/apps/452440/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
-      <h4 class="font-semibold text-lg">Flowers -Le volume sur printemps-</h4>
-      <p class="text-sm" data-i18n="portfolio.flowers.spring"></p>
-    </a>
+    <!-- 首页 Projects -->
+    <section id="home-projects" class="bg-white dark:bg-gray-900 py-10">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="section-title" data-i18n="home.projectsTitle"></h2>
+        <div class="projects-marquee pt-4">
+          <div class="projects-track">
+            <!-- 第一轮 -->
+            <!-- CTW 1 -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/news/kantai?lang=ja"
+                 data-href-en="https://g123.jp/news/kantai?lang=en"
+                 data-href-zh="https://g123.jp/news/kantai?lang=zh" target="_blank">
+                <img src="images/ctw_kantai.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <!-- 项目名 -->
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.kantai"></p>
+                  <!-- 公司 -->
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <!-- 职位 -->
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-    <a href="https://store.steampowered.com/app/858940/Flowers_Le_volume_sur_ete/" target="_blank"
-       class="portfolio-card p-4 rounded-xl bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105">
-      <img src="https://cdn.akamai.steamstatic.com/steam/apps/858940/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
-      <h4 class="font-semibold text-lg">Flowers -Le volume sur été-</h4>
-      <p class="text-sm" data-i18n="portfolio.flowers.summer"></p>
-    </a>
-  </div>
+            <!-- CTW 2 -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/yamato?lang=ja"
+                 data-href-en="https://g123.jp/game/yamato?lang=en"
+                 data-href-zh="https://g123.jp/game/yamato?lang=zh" target="_blank">
+                <img src="images/ctw_yamato.jpg" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.yamato"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-  <!-- 秋冬 -->
-  <div class="grid md:grid-cols-2 gap-6">
-    <a href="https://store.steampowered.com/app/1238730/Flowers_Le_volume_sur_automne/" target="_blank"
-       class="portfolio-card p-4 rounded-xl bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105">
-      <img src="https://cdn.akamai.steamstatic.com/steam/apps/1238730/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
-      <h4 class="font-semibold text-lg">Flowers -Le volume sur automne-</h4>
-      <p class="text-sm" data-i18n="portfolio.flowers.autumn"></p>
-    </a>
+            <!-- CTW 3 -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/ginei?lang=ja"
+                 data-href-en="https://g123.jp/game/ginei?lang=en"
+                 data-href-zh="https://g123.jp/game/ginei?lang=zh" target="_blank">
+                <img src="images/ctw_ginei.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.ginei"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-    <a href="https://store.steampowered.com/app/1921560/Flowers_Le_volume_sur_hiver/" target="_blank"
-       class="portfolio-card p-4 rounded-xl bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105">
-      <img src="https://cdn.akamai.steamstatic.com/steam/apps/1921560/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
-      <h4 class="font-semibold text-lg">Flowers -Le volume sur hiver-</h4>
-      <p class="text-sm" data-i18n="portfolio.flowers.winter"></p>
-    </a>
-  </div>
-</section>
+            <!-- CTW 4 -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/wixoss?lang=ja"
+                 data-href-en="https://g123.jp/game/wixoss?lang=en"
+                 data-href-zh="https://g123.jp/game/wixoss?lang=zh" target="_blank">
+                <img src="images/ctw_wixoss.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.wixoss"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-<!-- 使用ツール -->
-<section id="tools" class="bg-gray-50 dark:bg-gray-700 shadow-lg rounded-2xl p-10" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-10 border-b-2 pb-2 text-indigo-600 dark:text-indigo-400" data-i18n="tools.title"></h2>
-  <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
-    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transition">
-      <i data-lucide="image" class="w-10 h-10 mx-auto mb-3 text-[#31A8FF]"></i>
-      <p class="font-semibold">Photoshop</p>
-    </div>
-    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transition">
-      <i data-lucide="star" class="w-10 h-10 mx-auto mb-3 text-[#FF9A00]"></i>
-      <p class="font-semibold">Illustrator</p>
-    </div>
-    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transition">
-      <i data-lucide="type" class="w-10 h-10 mx-auto mb-3 text-[#8A2BE2]"></i>
-      <p class="font-semibold">Aegisub</p>
-    </div>
-    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transition">
-      <i data-lucide="file-text" class="w-10 h-10 mx-auto mb-3 text-[#2B579A]"></i>
-      <p class="font-semibold">Word</p>
-    </div>
-    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transition">
-      <i data-lucide="presentation" class="w-10 h-10 mx-auto mb-3 text-[#D24726]"></i>
-      <p class="font-semibold">PowerPoint</p>
-    </div>
-    <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-xl transition">
-      <i data-lucide="table" class="w-10 h-10 mx-auto mb-3 text-[#217346]"></i>
-      <p class="font-semibold">Excel</p>
-    </div>
-  </div>
-</section>
+            <!-- CTW 5 -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/seirei?lang=ja"
+                 data-href-en="https://g123.jp/game/seirei?lang=en"
+                 data-href-zh="https://g123.jp/game/seirei?lang=zh" target="_blank">
+                <img src="images/ctw_seirei.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.seirei"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-<!-- 私について -->
-<section id="me" class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2 text-indigo-600 dark:text-indigo-400" data-i18n="me.title"></h2>
+            <!-- Yostar -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
+                 data-href-en="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
+                 data-href-zh="https://kyoushingi-lab.github.io/azurlane-damage-calc/" target="_blank">
+                <img src="images/a-calc.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.yostar.calc"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.yostar.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.yostar.role"></p>
+                </div>
+              </a>
+            </div>
 
- <!-- 猫 -->
- <div class="mb-12">
-  <h3 class="font-semibold text-xl mb-6 text-indigo-600 dark:text-indigo-400" data-i18n="me.cat.section"></h3>
+            <!-- 第二轮（复制一遍） -->
+            <!-- CTW 1 copy -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/news/kantai?lang=ja"
+                 data-href-en="https://g123.jp/news/kantai?lang=en"
+                 data-href-zh="https://g123.jp/news/kantai?lang=zh" target="_blank">
+                <img src="images/ctw_kantai.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.kantai"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-  <div class="grid md:grid-cols-2 gap-8 items-start">
-    <!-- 左：轮播 -->
-    <div class="swiper w-full h-80 rounded-lg shadow-md transition transform hover:shadow-xl hover:scale-105">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide"><img src="images/cat1.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
-        <div class="swiper-slide"><img src="images/cat2.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
-        <div class="swiper-slide"><img src="images/cat3.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
-        <div class="swiper-slide"><img src="images/cat4.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
-      </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-pagination"></div>
-    </div>
+            <!-- CTW 2 copy -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/yamato?lang=ja"
+                 data-href-en="https://g123.jp/game/yamato?lang=en"
+                 data-href-zh="https://g123.jp/game/yamato?lang=zh" target="_blank">
+                <img src="images/ctw_yamato.jpg" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.yamato"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-    <!-- 右：信息卡 -->
-    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl shadow-lg p-6 space-y-4 transition transform hover:shadow-xl hover:scale-105">
-      <h4 class="text-xl font-bold text-indigo-600 dark:text-indigo-400" data-i18n="me.cat.name"></h4>
+            <!-- CTW 3 copy -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/ginei?lang=ja"
+                 data-href-en="https://g123.jp/game/ginei?lang=en"
+                 data-href-zh="https://g123.jp/game/ginei?lang=zh" target="_blank">
+                <img src="images/ctw_ginei.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.ginei"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-      <ul class="space-y-2 text-sm leading-relaxed">
-        <li>
-          <span class="font-semibold mr-1" data-i18n="me.cat.birthLabel"></span>
-          <span data-i18n="me.cat.birth"></span>
-        </li>
-        <li>
-          <span class="font-semibold mr-1" data-i18n="me.cat.typeLabel"></span>
-          <span data-i18n="me.cat.type"></span>
-        </li>
-        <li>
-          <span class="font-semibold mr-1" data-i18n="me.cat.charLabel"></span>
-          <span data-i18n="me.cat.char"></span>
-        </li>
-        <li>
-          <span class="font-semibold mr-1" data-i18n="me.cat.likeLabel"></span>
-          <span data-i18n="me.cat.like"></span>
-        </li>
-      </ul>
+            <!-- CTW 4 copy -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/wixoss?lang=ja"
+                 data-href-en="https://g123.jp/game/wixoss?lang=en"
+                 data-href-zh="https://g123.jp/game/wixoss?lang=zh" target="_blank">
+                <img src="images/ctw_wixoss.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.wixoss"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-      <p class="text-gray-600 dark:text-gray-300 text-sm" data-i18n="me.cat.desc"></p>
-    </div>
-  </div>
-</div>
+            <!-- CTW 5 copy -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://g123.jp/game/seirei?lang=ja"
+                 data-href-en="https://g123.jp/game/seirei?lang=en"
+                 data-href-zh="https://g123.jp/game/seirei?lang=zh" target="_blank">
+                <img src="images/ctw_seirei.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.ctw.seirei"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.ctw.role"></p>
+                </div>
+              </a>
+            </div>
 
-  <!-- 旅行 -->
-  <div class="mb-12">
-    <h3 class="font-semibold text-xl mb-3 text-indigo-600 dark:text-indigo-400" data-i18n="me.travel.title"></h3>
-    <div class="mb-6">
-      <div class="swiper w-full h-72 rounded-lg shadow-md transition transform hover:shadow-xl hover:scale-105">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="images/travel1.jpg" class="w-full h-72 object-cover rounded-lg"></div>
-          <div class="swiper-slide"><img src="images/travel2.jpg" class="w-full h-72 object-cover rounded-lg"></div>
-          <div class="swiper-slide"><img src="images/travel3.jpg" class="w-full h-72 object-cover rounded-lg"></div>
+            <!-- Yostar copy -->
+            <div class="projects-card">
+              <a class="i18n-href card-basic block overflow-hidden bg-white dark:bg-gray-800"
+                 data-href-ja="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
+                 data-href-en="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
+                 data-href-zh="https://kyoushingi-lab.github.io/azurlane-damage-calc/" target="_blank">
+                <img src="images/a-calc.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                <div class="p-2 text-left">
+                  <p class="project-title font-semibold text-gray-900 dark:text-gray-100" data-i18n="works.yostar.calc"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.yostar.company"></p>
+                  <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-tight" data-i18n="home.projects.yostar.role"></p>
+                </div>
+              </a>
+            </div>
+
+          </div>
         </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
       </div>
-    </div>
-    <iframe src="https://www.google.com/maps/d/embed?mid=1a5e0NGQMNqM9-WT6BTbWLAHpp5hIZ2o&ehbc=2E312F"
-            width="100%" height="400"
-            class="rounded-lg shadow-md border border-indigo-200 dark:border-indigo-600 transition transform hover:shadow-xl hover:scale-105"></iframe>
+    </section>
   </div>
 
- <!-- 推し活 -->
-  <div class="mb-12">
-    <h3 class="font-semibold text-xl mb-6 text-indigo-600 dark:text-indigo-400" data-i18n="me.oshikatsu.title"></h3>
+  <!-- TAB: 关于我 -->
+  <div id="tab-about" class="tab-panel hidden">
+    <div class="space-y-16 max-w-6xl mx-auto py-12">
 
-    <div class="grid grid-cols-1 mb-6">
-      <a class="i18n-href portfolio-card flex items-center p-4 rounded-xl bg-gray-50 dark:bg-gray-700 shadow hover:shadow-lg transition transform hover:scale-105"
-         target="_blank"
-         data-href-ja="https://weibo.com/u/6885862594"
-         data-href-en="https://weibo.com/u/6885862594"
-         data-href-zh="https://weibo.com/u/6885862594">
-        <img src="images/yurika-weibo-avatar.jpg" alt="Weibo"
-             class="w-20 h-20 rounded-full object-cover border border-gray-300 dark:border-gray-600 shadow-md mr-4">
-        <div>
-          <h4 class="font-semibold text-lg text-indigo-600 dark:text-indigo-400" data-i18n="me.oshikatsu.weiboTitle"></h4>
-          <p class="text-sm text-gray-600 dark:text-gray-300" data-i18n="me.oshikatsu.weiboDesc"></p>
+      <!-- 自己紹介 -->
+      <section id="about" class="px-6 md:px-0" data-aos="fade-up">
+        <h2 class="section-title" data-i18n="about.title"></h2>
+
+        <div class="grid md:grid-cols-3 gap-10 items-start mt-4">
+          <div class="md:col-span-1 text-center space-y-4">
+            <img src="images/MYMYMY.jpg" alt="KYOU"
+                 class="w-40 h-40 rounded-full mx-auto border-4 border-indigo-300 dark:border-indigo-500 transition transform hover:scale-110 cursor-pointer" loading="lazy">
+            <p class="text-2xl font-bold tracking-wide text-indigo-600 dark:text-indigo-400">KYOU</p>
+            <p class="text-sm text-gray-700 dark:text-gray-300" data-i18n="hero.roles"></p>
+          </div>
+
+          <div class="md:col-span-2 space-y-4 text-base leading-relaxed text-gray-700 dark:text-gray-300 mb-12">
+            <p data-i18n="about.p1"></p>
+            <p data-i18n="about.p2"></p>
+            <p data-i18n="about.p3"></p>
+            <p data-i18n="about.p4"></p>
+            <p data-i18n="about.p5"></p>
+            <p class="mb-12" data-i18n="about.p6"></p>
+          </div>
         </div>
-      </a>
-    </div>
 
-    <div class="grid md:grid-cols-4 gap-6 mt-6">
-      <a class="i18n-href block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow hover:shadow-lg transition transform hover:scale-105"
-         target="_blank"
-         data-href-ja="https://drive.google.com/file/d/1SY2lzz5mwrWwvw--3Tq-qBQVU8PNlo79/view?usp=drive_link"
-         data-href-en="https://drive.google.com/file/d/1SY2lzz5mwrWwvw--3Tq-qBQVU8PNlo79/view?usp=drive_link"
-         data-href-zh="https://drive.google.com/file/d/1SY2lzz5mwrWwvw--3Tq-qBQVU8PNlo79/view?usp=drive_link">
-        <img src="images/yuluna-fanletter1.png" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
-        <p class="text-center font-semibold" data-i18n="me.oshikatsu.fan1"></p>
-      </a>
+        <h3 class="subsection-title" data-i18n="about.edu"></h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
+            <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold whitespace-nowrap">2019–2021</span>
+            <p class="font-medium" data-i18n="about.eduItem1"></p>
+          </div>
+        </div>
 
-      <a class="i18n-href block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow hover:shadow-lg transition transform hover:scale-105"
-         target="_blank"
-         data-href-ja="https://drive.google.com/file/d/1FGKPSPUshlQix_xMYRJ1xpGAPwc1PFPT/view?usp=drive_link"
-         data-href-en="https://drive.google.com/file/d/1FGKPSPUshlQix_xMYRJ1xpGAPwc1PFPT/view?usp=drive_link"
-         data-href-zh="https://drive.google.com/file/d/1FGKPSPUshlQix_xMYRJ1xpGAPwc1PFPT/view?usp=drive_link">
-        <img src="images/yuluna-fanletter2.png" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
-        <p class="text-center font-semibold" data-i18n="me.oshikatsu.fan2"></p>
-      </a>
+        <h3 class="subsection-title" data-i18n="about.career"></h3>
+        <div class="space-y-4">
+          <div class="flex items-start space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
+            <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold">2021–2022</span>
+            <p class="font-medium" data-i18n="about.job1"></p>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
+            <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold">2022–2023</span>
+            <p class="font-medium" data-i18n="about.job2"></p>
+          </div>
+          <div class="flex items-start space-x-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
+            <span class="text-sm text-indigo-600 dark:text-indigo-300 font-semibold">2023–現在</span>
+            <p class="font-medium" data-i18n="about.job3"></p>
+          </div>
+        </div>
+      </section>
 
-      <a class="i18n-href block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow hover:shadow-lg transition transform hover:scale-105"
-         target="_blank"
-         data-href-ja="https://drive.google.com/file/d/1pBcU1ZO1jjiQHH7m8VZuFA8CamsKY-W0/view?usp=drive_link"
-         data-href-en="https://drive.google.com/file/d/1pBcU1ZO1jjiQHH7m8VZuFA8CamsKY-W0/view?usp=drive_link"
-         data-href-zh="https://drive.google.com/file/d/1pBcU1ZO1jjiQHH7m8VZuFA8CamsKY-W0/view?usp=drive_link">
-        <img src="images/yuluna-fanletter3.jpg" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
-        <p class="text-center font-semibold" data-i18n="me.oshikatsu.fan3"></p>
-      </a>
+      <!-- 使用ツール -->
+      <section id="tools" class="px-6 md:px-0" data-aos="fade-up">
+        <h2 class="section-title" data-i18n="tools.title"></h2>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center mt-6">
+          <div class="card-basic p-6 bg-white dark:bg-gray-800 rounded-xl">
+            <i data-lucide="image" class="w-10 h-10 mx-auto mb-3 text-[#31A8FF]"></i>
+            <p class="font-semibold">Photoshop</p>
+          </div>
+          <div class="card-basic p-6 bg-white dark:bg-gray-800 rounded-xl">
+            <i data-lucide="star" class="w-10 h-10 mx-auto mb-3 text-[#FF9A00]"></i>
+            <p class="font-semibold">Illustrator</p>
+          </div>
+          <div class="card-basic p-6 bg-white dark:bg-gray-800 rounded-xl">
+            <i data-lucide="type" class="w-10 h-10 mx-auto mb-3 text-[#8A2BE2]"></i>
+            <p class="font-semibold">Aegisub</p>
+          </div>
+          <div class="card-basic p-6 bg-white dark:bg-gray-800 rounded-xl">
+            <i data-lucide="file-text" class="w-10 h-10 mx-auto mb-3 text-[#2B579A]"></i>
+            <p class="font-semibold">Word</p>
+          </div>
+          <div class="card-basic p-6 bg-white dark:bg-gray-800 rounded-xl">
+            <i data-lucide="presentation" class="w-10 h-10 mx-auto mb-3 text-[#D24726]"></i>
+            <p class="font-semibold">PowerPoint</p>
+          </div>
+          <div class="card-basic p-6 bg-white dark:bg-gray-800 rounded-xl">
+            <i data-lucide="table" class="w-10 h-10 mx-auto mb-3 text-[#217346]"></i>
+            <p class="font-semibold">Excel</p>
+          </div>
+        </div>
+      </section>
 
-      <a class="i18n-href block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow hover:shadow-lg transition transform hover:scale-105"
-         target="_blank"
-         data-href-ja="https://drive.google.com/file/d/1T54Tz3e4GKz_7HExEyzVw93TY2d1uxq5/view?usp=drive_link"
-         data-href-en="https://drive.google.com/file/d/1uW4CU0I3idM_fQtToLLljX44TUtr6tBe/view?usp=drive_link"
-         data-href-zh="https://drive.google.com/file/d/138ssJdeefwNnDjyd9eEN-UiDRv77A5Va/view?usp=drive_link">
-        <img src="images/yuluna-event.png" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
-        <p class="text-center font-semibold" data-i18n="me.oshikatsu.event"></p>
-      </a>
+      <!-- 了解我：猫咪 + 旅行 -->
+      <section id="me-basic" class="px-6 md:px-0" data-aos="fade-up">
+        <h2 class="section-title" data-i18n="me.title"></h2>
+
+        <!-- 猫 -->
+        <div class="mb-12 mt-4">
+          <h3 class="subsection-title" data-i18n="me.cat.section"></h3>
+
+          <div class="grid md:grid-cols-2 gap-8 items-start mt-4">
+            <div class="swiper w-full h-80 rounded-lg card-basic">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="images/cat1.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
+                <div class="swiper-slide"><img src="images/cat2.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
+                <div class="swiper-slide"><img src="images/cat3.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
+                <div class="swiper-slide"><img src="images/cat4.jpg" alt="Nerine" class="w-full h-80 object-cover rounded-lg"></div>
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-pagination"></div>
+            </div>
+
+            <div class="card-basic bg-white dark:bg-gray-800 rounded-xl p-6 space-y-4">
+              <h4 class="text-xl font-bold text-indigo-600 dark:text-indigo-400" data-i18n="me.cat.name"></h4>
+
+              <ul class="space-y-2 text-sm leading-relaxed">
+                <li>
+                  <span class="font-semibold mr-1" data-i18n="me.cat.birthLabel"></span>
+                  <span data-i18n="me.cat.birth"></span>
+                </li>
+                <li>
+                  <span class="font-semibold mr-1" data-i18n="me.cat.typeLabel"></span>
+                  <span data-i18n="me.cat.type"></span>
+                </li>
+                <li>
+                  <span class="font-semibold mr-1" data-i18n="me.cat.charLabel"></span>
+                  <span data-i18n="me.cat.char"></span>
+                </li>
+                <li>
+                  <span class="font-semibold mr-1" data-i18n="me.cat.likeLabel"></span>
+                  <span data-i18n="me.cat.like"></span>
+                </li>
+              </ul>
+
+              <p class="text-gray-600 dark:text-gray-300 text-sm" data-i18n="me.cat.desc"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 旅行 -->
+        <div class="mb-12">
+          <h3 class="subsection-title" data-i18n="me.travel.title"></h3>
+          <div class="mb-6">
+            <div class="swiper w-full h-72 rounded-lg card-basic">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="images/travel1.jpg" class="w-full h-72 object-cover rounded-lg"></div>
+                <div class="swiper-slide"><img src="images/travel2.jpg" class="w-full h-72 object-cover rounded-lg"></div>
+                <div class="swiper-slide"><img src="images/travel3.jpg" class="w-full h-72 object-cover rounded-lg"></div>
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+          <iframe src="https://www.google.com/maps/d/embed?mid=1a5e0NGQMNqM9-WT6BTbWLAHpp5hIZ2o&ehbc=2E312F"
+                  width="100%" height="400"
+                  class="card-basic rounded-lg border border-indigo-200 dark:border-indigo-600"></iframe>
+        </div>
+      </section>
     </div>
   </div>
 
-  <!-- グッズ製作 -->
-  <div class="mb-12">
-    <h3 class="font-semibold text-xl mb-6 text-indigo-600 dark:text-indigo-400" data-i18n="me.goods.title"></h3>
-    <a class="i18n-href block p-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow hover:shadow-lg transition transform hover:scale-105"
-       target="_blank"
-       data-href-ja="https://drive.google.com/file/d/1PpYqKWlk4ljAUkix-eo1FsOS3fWpCzQU/view?usp=drive_link"
-       data-href-en="https://drive.google.com/file/d/1PpYqKWlk4ljAUkix-eo1FsOS3fWpCzQU/view?usp=drive_link"
-       data-href-zh="https://drive.google.com/file/d/1PpYqKWlk4ljAUkix-eo1FsOS3fWpCzQU/view?usp=drive_link">
-      <img src="images/Elysia-goods.png" alt="" class="w-full h-56 object-cover rounded-lg mb-3">
-      <p class="text-center font-semibold" data-i18n="me.goods.card"></p>
-    </a>
-  </div>
-</section>
+  <!-- TAB: 成果一览 -->
+  <div id="tab-works" class="tab-panel hidden">
+    <div class="space-y-16 max-w-6xl mx-auto py-12">
 
-<!-- お問い合わせ -->
-<section id="contact" class="bg-gray-50 dark:bg-gray-700 shadow-lg rounded-2xl p-8" data-aos="fade-up">
-  <h2 class="text-3xl font-bold mb-6 border-b-2 pb-2 text-indigo-600 dark:text-indigo-400" data-i18n="contact.title"></h2>
-  <div class="space-y-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-    <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-3 sm:space-y-0">
-      <a href="mailto:kyou.shingi@gmail.com" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
-        <i data-lucide="mail" class="w-5 h-5 mr-2"></i> kyou.shingi@gmail.com
-      </a>
-      <a href="https://www.linkedin.com/in/kyoushingi" target="_blank" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
-        <i data-lucide="linkedin" class="w-5 h-5 mr-2"></i> LinkedIn
-      </a>
+      <!-- 实绩 -->
+      <section id="works" class="px-6 md:px-0" data-aos="fade-up">
+        <h2 class="section-title" data-i18n="works.title"></h2>
+
+        <div class="space-y-12 mt-4">
+
+          <!-- 八紘電機 -->
+          <div>
+            <h3 class="subsection-title" data-i18n="works.yahiro.title"></h3>
+
+            <details class="mb-6" open>
+              <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.gd"></summary>
+              <div class="grid md:grid-cols-3 gap-6 mt-4">
+                <a href="#" class="pdf-link card-basic block p-4"
+                   data-link-ja="https://drive.google.com/file/d/1aWW4SiwCUDK8FGguC-LIVNoTABj5q201/view?usp=drive_link"
+                   data-link-en="https://drive.google.com/file/d/1aWW4SiwCUDK8FGguC-LIVNoTABj5q201/view?usp=drive_link"
+                   data-link-zh="https://drive.google.com/file/d/1aWW4SiwCUDK8FGguC-LIVNoTABj5q201/view?usp=drive_link">
+                  <img src="images/yahiro_design1.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
+                  <p class="font-semibold text-center" data-i18n="works.yahiro.catalog"></p>
+                </a>
+                <a href="#" class="pdf-link card-basic block p-4"
+                   data-link-ja="https://drive.google.com/file/d/1eYd87OIsM2YriO2sOBLkEI-Gc0UjgQQY/view?usp=drive_link"
+                   data-link-en="https://drive.google.com/file/d/1eYd87OIsM2YriO2sOBLkEI-Gc0UjgQQY/view?usp=drive_link"
+                   data-link-zh="https://drive.google.com/file/d/1eYd87OIsM2YriO2sOBLkEI-Gc0UjgQQY/view?usp=drive_link">
+                  <img src="images/yahiro_design2.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
+                  <p class="font-semibold text-center" data-i18n="works.yahiro.pamphlet"></p>
+                </a>
+              </div>
+            </details>
+
+            <details class="mb-6" open>
+              <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.ep"></summary>
+              <div class="grid md:grid-cols-3 gap-6 mt-4">
+                <a href="#" class="pdf-link card-basic block p-4"
+                   data-link-ja="https://drive.google.com/file/d/105B7EzpLmAPlZHYhTZ3IOCx67rGuOO-H/view?usp=drive_link"
+                   data-link-en="https://drive.google.com/file/d/1n8MVSPdsWKTOwMza81-0vFj3XnsPUL3_/view?usp=drive_link"
+                   data-link-zh="https://drive.google.com/file/d/1fgDihuhetkbLAS6hPFTLXrlIyvK9GUBh/view?usp=drive_link">
+                  <img src="images/yahiro_event.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
+                  <p class="font-semibold text-center" data-i18n="works.yahiro.case"></p>
+                </a>
+              </div>
+            </details>
+          </div>
+
+          <!-- CTW -->
+          <div>
+            <h3 class="subsection-title" data-i18n="works.ctw.title"></h3>
+
+            <details class="mb-6" open>
+              <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.pm"></summary>
+              <div class="grid md:grid-cols-3 gap-6 mt-4">
+                <a class="i18n-href card-basic block overflow-hidden"
+                   data-href-ja="https://g123.jp/news/kantai?lang=ja"
+                   data-href-en="https://g123.jp/news/kantai?lang=en"
+                   data-href-zh="https://g123.jp/news/kantai?lang=zh" target="_blank">
+                  <img src="images/ctw_kantai.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                  <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.kantai"></p>
+                </a>
+                <a class="i18n-href card-basic block overflow-hidden"
+                   data-href-ja="https://g123.jp/game/yamato?lang=ja"
+                   data-href-en="https://g123.jp/game/yamato?lang=en"
+                   data-href-zh="https://g123.jp/game/yamato?lang=zh" target="_blank">
+                  <img src="images/ctw_yamato.jpg" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                  <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.yamato"></p>
+                </a>
+                <a class="i18n-href card-basic block overflow-hidden"
+                   data-href-ja="https://g123.jp/game/ginei?lang=ja"
+                   data-href-en="https://g123.jp/game/ginei?lang=en"
+                   data-href-zh="https://g123.jp/game/ginei?lang=zh" target="_blank">
+                  <img src="images/ctw_ginei.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                  <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.ginei"></p>
+                </a>
+                <a class="i18n-href card-basic block overflow-hidden"
+                   data-href-ja="https://g123.jp/game/wixoss?lang=ja"
+                   data-href-en="https://g123.jp/game/wixoss?lang=en"
+                   data-href-zh="https://g123.jp/game/wixoss?lang=zh" target="_blank">
+                  <img src="images/ctw_wixoss.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                  <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.wixoss"></p>
+                </a>
+                <a class="i18n-href card-basic block overflow-hidden"
+                   data-href-ja="https://g123.jp/game/seirei?lang=ja"
+                   data-href-en="https://g123.jp/game/seirei?lang=en"
+                   data-href-zh="https://g123.jp/game/seirei?lang=zh" target="_blank">
+                  <img src="images/ctw_seirei.png" alt="" class="w-full object-cover rounded-t-[16px]" style="aspect-ratio:600/1138;">
+                  <p class="text-center font-semibold p-2 bg-gray-50 dark:bg-gray-700" data-i18n="works.ctw.seirei"></p>
+                </a>
+              </div>
+            </details>
+
+            <details class="mb-6" open>
+              <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.op"></summary>
+              <div class="grid md:grid-cols-3 gap-6 mt-4">
+                <a href="#" class="pdf-link card-basic block p-4"
+                   data-link-ja="https://drive.google.com/file/d/1Gf_nrrbmCQT2N5nIlAf48qYRRYandxsW/view?usp=drive_link"
+                   data-link-en="https://drive.google.com/file/d/11he4c7U9pXixkHvpzYWubbx9tGZEYvhi/view?usp=drive_link"
+                   data-link-zh="https://drive.google.com/file/d/1eysFGq5zlpgJaWAlCxfzGA-XFToH3guQ/view?usp=drive_link">
+                  <img src="images/ctw_game1.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
+                  <p class="font-semibold text-center" data-i18n="works.ctw.kpi"></p>
+                </a>
+                <a href="#" class="pdf-link card-basic block p-4"
+                   data-link-ja="https://drive.google.com/file/d/1xv6WF43d-bgWQIg7iHVD2GaClt37v6He/view?usp=drive_link"
+                   data-link-en="https://drive.google.com/file/d/1PdAU5H5puU5_5z88h1p-fJ9u0wRLuhBM/view?usp=drive_link"
+                   data-link-zh="https://drive.google.com/file/d/12e5tAGpP7HwcAdG6BJvHa9M5vWRc7z9B/view?usp=drive_link">
+                  <img src="images/ctw_game2.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
+                  <p class="font-semibold text-center" data-i18n="works.ctw.event"></p>
+                </a>
+              </div>
+            </details>
+          </div>
+
+          <!-- Yostar -->
+          <div>
+            <h3 class="subsection-title" data-i18n="works.yostar.title"></h3>
+
+            <details class="mb-6" open>
+              <summary class="cursor-pointer font-medium text-gray-800 dark:text-gray-200" data-i18n="works.role.qa"></summary>
+              <div class="grid md:grid-cols-3 gap-6 mt-4">
+                <a href="#" class="pdf-link card-basic block p-4"
+                   data-link-ja="https://docs.google.com/spreadsheets/d/19C02X-HV6lsJRzRN_Bu52m--RgqSJ8LLLgM6fZoFfWk/edit?usp=sharing"
+                   data-link-en="https://docs.google.com/spreadsheets/d/19C02X-HV6lsJRzRN_Bu52m--RgqSJ8LLLgM6fZoFfWk/edit?usp=sharing"
+                   data-link-zh="https://docs.google.com/spreadsheets/d/19C02X-HV6lsJRzRN_Bu52m--RgqSJ8LLLgM6fZoFfWk/edit?usp=sharing">
+                  <img src="images/a-qa.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
+                  <p class="font-semibold text-center" data-i18n="works.yostar.qaCases"></p>
+                </a>
+                <a href="#" class="pdf-link card-basic block p-4"
+                   data-link-ja="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
+                   data-link-en="https://kyoushingi-lab.github.io/azurlane-damage-calc/"
+                   data-link-zh="https://kyoushingi-lab.github.io/azurlane-damage-calc/">
+                  <img src="images/a-calc.png" alt="" class="w-full h-32 object-contain mb-3 rounded">
+                  <p class="font-semibold text-center" data-i18n="works.yostar.calc"></p>
+                </a>
+              </div>
+            </details>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 作品展示（FLOWERS） -->
+      <section id="portfolio" class="px-6 md:px-0" data-aos="fade-up">
+        <h2 class="section-title" data-i18n="portfolio.title"></h2>
+        <h3 class="subsection-title" data-i18n="portfolio.flowersTitle"></h3>
+
+        <div class="grid grid-cols-1 mb-6 mt-3">
+          <a class="i18n-href portfolio-card card-basic p-4"
+             target="_blank"
+             data-href-ja="https://drive.google.com/file/d/1qFWPrr3cwu3SY2jfY9LDBE6cK6Uw7OpX/view?usp=drive_link"
+             data-href-en="https://drive.google.com/file/d/1C9Gti4wPzKjLVx6J7dIap_HG9BNLn08T/view?usp=drive_link"
+             data-href-zh="https://drive.google.com/file/d/1U0fy3uZ3fnREzgYJOVg2KMJfbnSarsw-/view?usp=drive_link">
+            <img src="images/flowers-pdf-preview.png" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
+            <h4 class="font-semibold text-lg" data-i18n="portfolio.plan"></h4>
+            <p class="text-sm" data-i18n="portfolio.planDesc"></p>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 mb-6">
+          <a href="https://weibo.com/u/3950079300" target="_blank"
+             class="portfolio-card card-basic flex items-center p-4">
+            <img src="images/flowers-weibo-avatar.png" alt="Weibo"
+                 class="w-20 h-20 rounded-full object-cover border border-gray-300 dark:border-gray-600 mr-4">
+            <div>
+              <h4 class="font-semibold text-lg text-indigo-600 dark:text-indigo-400" data-i18n="portfolio.flowers.weiboTitle"></h4>
+              <p class="text-sm text-gray-600 dark:text-gray-300" data-i18n="portfolio.flowers.weiboDesc"></p>
+            </div>
+          </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <a href="https://store.steampowered.com/app/452440/Flowers_Le_volume_sur_printemps/" target="_blank"
+             class="portfolio-card card-basic p-4">
+            <img src="https://cdn.akamai.steamstatic.com/steam/apps/452440/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
+            <h4 class="font-semibold text-lg">Flowers -Le volume sur printemps-</h4>
+            <p class="text-sm" data-i18n="portfolio.flowers.spring"></p>
+          </a>
+
+          <a href="https://store.steampowered.com/app/858940/Flowers_Le_volume_sur_ete/" target="_blank"
+             class="portfolio-card card-basic p-4">
+            <img src="https://cdn.akamai.steamstatic.com/steam/apps/858940/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
+            <h4 class="font-semibold text-lg">Flowers -Le volume sur été-</h4>
+            <p class="text-sm" data-i18n="portfolio.flowers.summer"></p>
+          </a>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <a href="https://store.steampowered.com/app/1238730/Flowers_Le_volume_sur_automne/" target="_blank"
+             class="portfolio-card card-basic p-4">
+            <img src="https://cdn.akamai.steamstatic.com/steam/apps/1238730/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
+            <h4 class="font-semibold text-lg">Flowers -Le volume sur automne-</h4>
+            <p class="text-sm" data-i18n="portfolio.flowers.autumn"></p>
+          </a>
+
+          <a href="https://store.steampowered.com/app/1921560/Flowers_Le_volume_sur_hiver/" target="_blank"
+             class="portfolio-card card-basic p-4">
+            <img src="https://cdn.akamai.steamstatic.com/steam/apps/1921560/header.jpg" class="w-full h-56 object-cover rounded-lg mb-3" alt="">
+            <h4 class="font-semibold text-lg">Flowers -Le volume sur hiver-</h4>
+            <p class="text-sm" data-i18n="portfolio.flowers.winter"></p>
+          </a>
+        </div>
+      </section>
+
+      <!-- 应援 + 周边 -->
+      <section id="oshigoods" class="px-6 md:px-0" data-aos="fade-up">
+        <!-- 推し活 -->
+        <div class="mb-12 mt-4">
+          <h3 class="subsection-title" data-i18n="me.oshikatsu.title"></h3>
+
+          <div class="grid grid-cols-1 mb-6 mt-3">
+            <a class="i18n-href portfolio-card card-basic flex items-center p-4"
+               target="_blank"
+               data-href-ja="https://weibo.com/u/6885862594"
+               data-href-en="https://weibo.com/u/6885862594"
+               data-href-zh="https://weibo.com/u/6885862594">
+              <img src="images/yurika-weibo-avatar.jpg" alt="Weibo"
+                   class="w-20 h-20 rounded-full object-cover border border-gray-300 dark:border-gray-600 mr-4">
+              <div>
+                <h4 class="font-semibold text-lg text-indigo-600 dark:text-indigo-400" data-i18n="me.oshikatsu.weiboTitle"></h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300" data-i18n="me.oshikatsu.weiboDesc"></p>
+              </div>
+            </a>
+          </div>
+
+          <div class="grid md:grid-cols-4 gap-6 mt-6">
+            <a class="i18n-href card-basic block p-4"
+               target="_blank"
+               data-href-ja="https://drive.google.com/file/d/1SY2lzz5mwrWwvw--3Tq-qBQVU8PNlo79/view?usp=drive_link"
+               data-href-en="https://drive.google.com/file/d/1SY2lzz5mwrWwvw--3Tq-qBQVU8PNlo79/view?usp=drive_link"
+               data-href-zh="https://drive.google.com/file/d/1SY2lzz5mwrWwvw--3Tq-qBQVU8PNlo79/view?usp=drive_link">
+              <img src="images/yuluna-fanletter1.png" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
+              <p class="text-center font-semibold" data-i18n="me.oshikatsu.fan1"></p>
+            </a>
+
+            <a class="i18n-href card-basic block p-4"
+               target="_blank"
+               data-href-ja="https://drive.google.com/file/d/1FGKPSPUshlQix_xMYRJ1xpGAPwc1PFPT/view?usp=drive_link"
+               data-href-en="https://drive.google.com/file/d/1FGKPSPUshlQix_xMYRJ1xpGAPwc1PFPT/view?usp=drive_link"
+               data-href-zh="https://drive.google.com/file/d/1FGKPSPUshlQix_xMYRJ1xpGAPwc1PFPT/view?usp=drive_link">
+              <img src="images/yuluna-fanletter2.png" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
+              <p class="text-center font-semibold" data-i18n="me.oshikatsu.fan2"></p>
+            </a>
+
+            <a class="i18n-href card-basic block p-4"
+               target="_blank"
+               data-href-ja="https://drive.google.com/file/d/1pBcU1ZO1jjiQHH7m8VZuFA8CamsKY-W0/view?usp=drive_link"
+               data-href-en="https://drive.google.com/file/d/1pBcU1ZO1jjiQHH7m8VZuFA8CamsKY-W0/view?usp=drive_link"
+               data-href-zh="https://drive.google.com/file/d/1pBcU1ZO1jjiQHH7m8VZuFA8CamsKY-W0/view?usp=drive_link">
+              <img src="images/yuluna-fanletter3.jpg" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
+              <p class="text-center font-semibold" data-i18n="me.oshikatsu.fan3"></p>
+            </a>
+
+            <a class="i18n-href card-basic block p-4"
+               target="_blank"
+               data-href-ja="https://drive.google.com/file/d/1T54Tz3e4GKz_7HExEyzVw93TY2d1uxq5/view?usp=drive_link"
+               data-href-en="https://drive.google.com/file/d/1uW4CU0I3idM_fQtToLLljX44TUtr6tBe/view?usp=drive_link"
+               data-href-zh="https://drive.google.com/file/d/138ssJdeefwNnDjyd9eEN-UiDRv77A5Va/view?usp=drive_link">
+              <img src="images/yuluna-event.png" alt="" class="w-full h-40 object-cover rounded-lg mb-3">
+              <p class="text-center font-semibold" data-i18n="me.oshikatsu.event"></p>
+            </a>
+          </div>
+        </div>
+
+        <!-- グッズ製作 -->
+        <div class="mb-12">
+          <h3 class="subsection-title" data-i18n="me.goods.title"></h3>
+          <a class="i18n-href card-basic block p-4"
+             target="_blank"
+             data-href-ja="https://drive.google.com/file/d/1PpYqKWlk4ljAUkix-eo1FsOS3fWpCzQU/view?usp=drive_link"
+             data-href-en="https://drive.google.com/file/d/1PpYqKWlk4ljAUkix-eo1FsOS3fWpCzQU/view?usp=drive_link"
+             data-href-zh="https://drive.google.com/file/d/1PpYqKWlk4ljAUkix-eo1FsOS3fWpCzQU/view?usp=drive_link">
+            <img src="images/Elysia-goods.png" alt="" class="w-full h-56 object-cover rounded-lg mb-3">
+            <p class="text-center font-semibold" data-i18n="me.goods.card"></p>
+          </a>
+        </div>
+      </section>
     </div>
-    <p data-i18n="contact.note"></p>
   </div>
-</section>
+
+  <!-- TAB: 联系我 -->
+  <div id="tab-contact" class="tab-panel hidden">
+    <div class="space-y-16 max-w-6xl mx-auto py-12">
+      <section id="contact" class="px-6 md:px-0" data-aos="fade-up">
+        <h2 class="section-title" data-i18n="contact.title"></h2>
+        <div class="space-y-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300 mt-4">
+          <div class="mt-2 flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-3 sm:space-y-0">
+            <a href="mailto:kyou.shingi@gmail.com" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+              <i data-lucide="mail" class="w-5 h-5 mr-2"></i> kyou.shingi@gmail.com
+            </a>
+            <a href="https://www.linkedin.com/in/kyoushingi" target="_blank" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+              <i data-lucide="linkedin" class="w-5 h-5 mr-2"></i> LinkedIn
+            </a>
+          </div>
+          <p data-i18n="contact.note"></p>
+        </div>
+      </section>
+    </div>
+  </div>
 </main>
 
 <!-- Back to top -->
@@ -594,14 +891,26 @@ backToTop.addEventListener("click", ()=> window.scrollTo({top:0,behavior:"smooth
 
 // Swiper
 new Swiper(".swiper",{ loop:true, pagination:{el:".swiper-pagination"}, navigation:{nextEl:".swiper-button-next",prevEl:".swiper-button-prev"} });
-</script>
 
-<!-- ============ i18n（默认 JA） ============ -->
-<script>
+/* ============ i18n（默认 JA） ============ */
 const i18n = {
   ja:{
-    nav:{home:"ホーム",about:"自己紹介",works:"実績・作品一覧",portfolio:"作品展示",tools:"使用ツール",me:"私について",contact:"お問い合わせ"},
+    nav:{home:"ホーム",about:"自己紹介",works:"実績一覧",contact:"お問い合わせ"},
     hero:{roles:"ゲームプロジェクトマネージャー / 運営 / QA<br>グラフィックデザイナー / イベント企画",tagline:"効率と正確性を追求する<br>ゲーム運営と品質管理"},
+    home:{
+      projectsTitle:"プロジェクト一覽",
+      projects:{
+        ctw:{
+          company:"2022–2023 CTW株式会社",
+          role:"ゲームプロジェクトマネージャー"
+        },
+        yostar:{
+          company:"2023–現在 株式会社Yostar",
+          role:"ゲームQA / ツール開発"
+        }
+      }
+    },
+
     about:{
       title:"自己紹介",
       p1:"私はゲーム業界において、ゲーム全体のプロジェクトマネジメントを中心に、幅広い業務経験を積んでまいりました。",
@@ -628,7 +937,7 @@ const i18n = {
       title:"作品展示",
       plan:"FLOWERS ローカライズ企画書",
       planDesc:"プロジェクト背景と翻訳の方向性。",
-      flowersTitle: "PCゲーム『FLOWER・四季』日中翻訳プロジェクト",
+      flowersTitle: "PCゲーム『FLOWERS・四季』日中翻訳プロジェクト",
       flowers:{
         weiboTitle:"FLOWERS 中国語版 公式アカウント（Weibo）",
         weiboDesc:"翻訳・運営情報を発信していた公式SNSアカウント",
@@ -662,8 +971,22 @@ const i18n = {
   },
 
   en:{
-    nav:{home:"Home",about:"About Me",works:"Works & Portfolio",portfolio:"Portfolio",tools:"Tools",me:"Get to Know Me",contact:"Contact"},
+    nav:{home:"Home",about:"About Me",works:"Highlights",contact:"Contact"},
     hero:{roles:"Game PM / Operation / QA<br>Graphic Designer / Event Planner",tagline:"Game Operation and Quality Management<br>Pursuing Efficiency and Accuracy"},
+    home:{
+      projectsTitle:"Projects",
+      projects:{
+        ctw:{
+          company:"2022–2023 CTW Inc.",
+          role:"Game Project Manager"
+        },
+        yostar:{
+          company:"2023–Present Yostar Inc.",
+          role:"Game QA / Tool Development"
+        }
+      }
+    },
+
     about:{
       title:"About Me",
       p1:"In the game industry, I have built a broad range of experience, primarily focusing on overall game project management.",
@@ -688,9 +1011,9 @@ const i18n = {
     },
     portfolio:{
       title:"Portfolio",
-      flowersTitle: "PC Game “FLOWERS: Four Seasons” JP–CN Localization Project",
       plan:"FLOWERS Localization Proposal",
       planDesc:"Project Background and Translation Direction.",
+      flowersTitle: "PC Game “FLOWERS: Four Seasons” JP–CN Localization Project",
       flowers:{
         weiboTitle:"FLOWERS CN Official Account (Weibo)",
         weiboDesc:"Official SNS that posted translation & operation updates",
@@ -724,11 +1047,25 @@ const i18n = {
   },
 
   zh:{
-    nav:{home:"首页",about:"关于我",works:"成果一览",portfolio:"作品一览",tools:"使用工具",me:"了解我",contact:"联系我"},
+    nav:{home:"首页",about:"关于我",works:"成果一览",contact:"联系我"},
     hero:{roles:"游戏 PM / 运营 / QA<br>平面设计 / 活动策划",tagline:"追求效率与准确性的游戏运营与品质管理"},
+    home:{
+      projectsTitle:"项目一览",
+      projects:{
+        ctw:{
+          company:"2022–2023 CTW 株式会社",
+          role:"游戏项目经理"
+        },
+        yostar:{
+          company:"2023–至今 株式会社Yostar",
+          role:"游戏QA / 工具开发"
+        }
+      }
+    },
+
     about:{
       title:"关于我",
-      p1:"我在游戏行业中，我以游戏整体项目管理为核心，积累了广泛的实务经验。",
+      p1:"我在游戏行业中，以游戏整体项目管理为核心，积累了广泛的实务经验。",
       p2:"通过总体规划、进度跟踪、问题解决与资源管理，推动项目顺利推进。",
       p3:"与多团队协作，基于 KPI 分析制定并执行运营方案，实现收益最大化。",
       p4:"也利用平面设计能力，制作更具吸引力的视觉内容。",
@@ -750,9 +1087,9 @@ const i18n = {
     },
     portfolio:{
       title:"作品一览",
-      flowersTitle: "PC 游戏《FLOWERS・四季》日译中本地化项目",
       plan:"FLOWERS 本地化企划书",
       planDesc:"项目背景与翻译方针。",
+      flowersTitle: "PC 游戏《FLOWERS・四季》日译中本地化项目",
       flowers:{
         weiboTitle:"FLOWERS 官方中文账号（微博）",
         weiboDesc:"发布翻译与运营信息的官方账号",
@@ -771,13 +1108,13 @@ const i18n = {
         birthLabel: "生日：",  birth: "2022年9月16日",
         typeLabel: "品种：",  type: "英短金渐层",
         charLabel: "性格：",  char: "黏人、略傲娇、好奇心强",
-        likeLabel: "喜欢：",  like: "喜好吃虾、逗猫棒、激光笔",
+        likeLabel: "喜欢：",  like: "虾、逗猫棒、激光笔",
         desc:"奈莉奈是与我生活在一起的重要家人，带来治愈与活力，也是我工作与生活的支撑。"},
       travel:{title:"旅行"},
       oshikatsu:{
         title:"应援活动",
         weiboTitle:"中村百合香中文日记（微博）",
-        weiboDesc:"用爱发电，负责发布中村百合香相关的翻译内容及应援活动信息。",
+        weiboDesc:"用爱发电，发布相关翻译内容及应援活动信息。",
         fan1:"活动应援册制作①",fan2:"活动应援册制作②",fan3:"活动应援册制作③",event:"线下应援活动企划"
       },
       goods:{title:"周边制作",card:"周边设计"}
@@ -802,30 +1139,26 @@ function setLang(lang){
 document.querySelectorAll(".lang-btn").forEach(btn=>{
   btn.addEventListener("click", ()=> setLang(btn.dataset.lang));
 });
-setLang(localStorage.getItem("lang") || "ja"); // 默认日语
+setLang(localStorage.getItem("lang") || "ja");
 </script>
 
 <!-- 多语言外链 & PDF -->
 <script>
-// 当前语言
 function getLang(){ return localStorage.getItem("lang") || "ja"; }
 
-// 按语言挑 data- 属性（stem = "link" 或 "href"）
 function pickByLang(el, stem){
   const lang = getLang();
   const suffix = lang === "ja" ? "Ja" : (lang === "en" ? "En" : "Zh");
-  const key = stem + suffix; // e.g. linkJa / hrefEn / hrefZh
+  const key = stem + suffix;
   return el.dataset[key] || el.dataset[stem] || el.getAttribute("href") || "#";
 }
 
-// 刷新普通外链（class="i18n-href"）
 function updateLocalizedHrefs(){
   document.querySelectorAll("a.i18n-href").forEach(a=>{
     a.setAttribute("href", pickByLang(a, "href"));
   });
 }
 
-// 保留原 setLang，增强：切语言后刷新外链 & 重新挂载 Lucide 图标
 const __oldSetLang = window.setLang;
 window.setLang = function(lang){
   __oldSetLang(lang);
@@ -833,10 +1166,8 @@ window.setLang = function(lang){
   if(window.lucide?.createIcons){ window.lucide.createIcons(); }
 };
 
-// 初始刷新一次
 updateLocalizedHrefs();
 
-// PDF/受保护链接
 document.addEventListener('click', e => {
   const a = e.target.closest('.pdf-link');
   if (!a) return;
@@ -860,69 +1191,45 @@ document.addEventListener('click', e => {
 });
 </script>
 
-<!-- 页签切换逻辑：4 个“页面” -->
+<!-- Tabs -->
 <script>
-// 每个“页签”应该显示哪些 section
-const pageMap = {
-  "page-home":    ["hero"],                    // 首页：只 Hero
-  "page-about":   ["about","tools","me"],      // 关于我：自我介绍 + 使用工具 + 了解我
-  "page-works":   ["works","portfolio"],       // 成果一览：成果 + FLOWERS 作品
-  "page-contact": ["contact"]                  // 联系我
-};
+const tabLinks = document.querySelectorAll(".tab-link");
+const tabPanels = document.querySelectorAll(".tab-panel");
+const mobileMenuEl = document.getElementById("mobileMenu");
 
-const allSectionIds = ["hero","about","works","portfolio","tools","me","contact"];
-
-function showPage(pageId){
-  allSectionIds.forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    const shouldShow = (pageMap[pageId] || []).includes(id);
-    el.style.display = shouldShow ? "" : "none";
+function setTabActiveStyles(tabId){
+  tabLinks.forEach(l=>{
+    const active = l.dataset.tab === tabId;
+    l.classList.toggle("text-indigo-600", active);
+    l.classList.toggle("dark:text-indigo-300", active);
+    l.classList.toggle("border-indigo-500", active);
+    l.classList.toggle("border-b-2", active);
   });
-
-  // 高亮当前导航
-  document.querySelectorAll(".nav-link").forEach(a=>{
-    a.classList.toggle("active", a.dataset.page === pageId);
-  });
-
-  // 更新 URL hash
-  if (pageId) {
-    history.replaceState(null, "", "#" + pageId);
-  }
-
-  // 滚动回顶部，让内容直接出现在视野
-  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
-
-  if(window.lucide?.createIcons){ window.lucide.createIcons(); }
 }
 
-// 初始：根据 hash 决定显示哪页
-window.addEventListener("load", ()=>{
-  const hash = location.hash.replace("#","");
-  const defaultPage = "page-home";
-  const initialPage = pageMap[hash] ? hash : defaultPage;
-  showPage(initialPage);
-});
+function switchTab(tabId){
+  tabPanels.forEach(p=>{
+    p.classList.toggle("hidden", p.id !== `tab-${tabId}`);
+  });
+  setTabActiveStyles(tabId);
+  localStorage.setItem("activeTab", tabId);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
 
-// 导航点击
-document.querySelectorAll(".nav-link").forEach(a=>{
-  a.addEventListener("click", e=>{
-    const pageId = a.dataset.page;
-    if(!pageId) return;
-    e.preventDefault();
-    showPage(pageId);
+const initialTab = localStorage.getItem("activeTab") || "home";
+switchTab(initialTab);
 
-    // 手机端点完自动收起菜单
-    const mobileMenu = document.getElementById("mobileMenu");
-    if(mobileMenu && !mobileMenu.classList.contains("hidden")){
-      mobileMenu.classList.add("hidden");
+tabLinks.forEach(link=>{
+  link.addEventListener("click", ()=>{
+    const tabId = link.dataset.tab;
+    switchTab(tabId);
+    if(mobileMenuEl && !mobileMenuEl.classList.contains("hidden")){
+      mobileMenuEl.classList.add("hidden");
     }
   });
 });
-
-// 最后再挂一次图标
-lucide.createIcons();
 </script>
 
+<script>lucide.createIcons();</script>
 </body>
 </html>
